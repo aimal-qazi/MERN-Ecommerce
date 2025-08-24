@@ -24,16 +24,16 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
+        const { name, brand, category, description, price, countInStock, image } = req.body;
         const product = new Product({
-            name: 'Sample name',
-            price: 0,
-            user: req.user._id,
-            image: '/images/p1.jpg',
-            brand: 'Sample brand',
-            category: 'Sample category',
-            countInStock: 0,
-            numReviews: 0,
-            description: 'Sample description'
+            name,
+            price,
+            image,
+            brand,
+            category,
+            countInStock,
+            description,
+            user: req.user._id
         })
 
         const createdProduct = await product.save();
@@ -47,17 +47,21 @@ export const updateProduct = async (req, res) => {
     try {
         const { name, price, description, image, brand, category, countInStock } = req.body;
         const product = await Product.findById(req.params.id);
-        if (product) {
-            product.name = name;
-            product.price = price;
-            product.description = description;
-            product.image = image;
-            product.brand = brand;
-            product.category = category;
-            product.countInStock = countInStock;
 
-            const updateProduct = await product.save();
-            res.json(updateProduct);
+        if (product) {
+            product.name = name || product.name;
+            product.brand = brand || product.brand;
+            product.category = category || product.category;
+            product.description = description || product.description;
+            product.price = price || product.price;
+            product.countInStock = countInStock || product.countInStock;
+
+            if (image) {
+                product.image = image;
+            }
+
+            const updatedProduct = await product.save();
+            res.json(updatedProduct);
         } else {
             res.status(404).json({ message: "Product not found" });
         }
