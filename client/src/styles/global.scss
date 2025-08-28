@@ -1,0 +1,20 @@
+@use './auth.scss' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #ff2d55;
+  --secondary-color: #e91f44;
+  --background-color: #f0f0f0;
+  --text-color: #333;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--background-color);
+  color: var(--text-color);
+}
